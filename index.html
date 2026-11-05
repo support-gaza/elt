@@ -87,6 +87,10 @@
   .chat-bubble .meta-time { font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem; direction: ltr; }
   .chat-bubble.mine .meta-time { text-align: left; }
   .chat-bubble.other .meta-time { text-align: right; }
+  
+  /* اسم الأدمن أسفل الرسالة */
+  .admin-label { font-size: 0.75rem; color: var(--secondary); font-weight: bold; margin-top: 0.5rem; text-align: left; display: flex; align-items: center; gap: 0.3rem; }
+
   .reply-notification { font-size: 0.75rem; color: #f87171; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
   .chat-bubble .bubble-text { margin-bottom: 0.5rem; }
   .chat-bubble .bubble-text img { max-width: 100%; border-radius: 10px; margin-top: 0.8rem; display: block; cursor: pointer; }
@@ -169,7 +173,6 @@
   .user-gallery-item .action-btns a, .user-gallery-item .action-btns button { flex: 1; padding: 0.4rem; background: rgba(0,0,0,0.5); color: var(--primary); text-decoration: none; text-align: center; font-size: 0.75rem; border: none; cursor: pointer; font-family: inherit; }
   .user-gallery-item .action-btns a:hover, .user-gallery-item .action-btns button:hover { background: var(--primary); color: #000; }
 
-  /* زر حذف الملف للأدمن */
   .user-gallery-item .admin-delete-btn {
     position: absolute;
     top: 5px;
@@ -540,8 +543,14 @@
 
     const now = new Date();
     const newComment = {
-      id: 'comment_' + Date.now(), userId: currentUser.id, text: text, file: fileData,
-      time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), date: now.toLocaleDateString('en-GB'), replyTo: activeReplyId
+      id: 'comment_' + Date.now(), 
+      userId: currentUser.id, 
+      text: text, 
+      file: fileData,
+      time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), 
+      date: now.toLocaleDateString('en-GB'), 
+      replyTo: activeReplyId,
+      isAdmin: document.body.classList.contains('admin-mode') // تحديد ما إذا كان المرسل أدمن
     };
 
     await saveDataToCloud([...commentsData, newComment], reportsData);
@@ -595,10 +604,17 @@
     let lastDate = ""; let html = "";
     chatComments.forEach(c => {
       if (c.date !== lastDate) { html += `<div class="day-separator"><span>اليوم: ${c.date}</span></div>`; lastDate = c.date; }
+      
+      // تحديد ما إذا كانت الرسالة للمستخدم الحالي أم لشخص آخر
       const isMine = c.userId === currentUser.id;
+      
+      // تحديد ما إذا كانت الرسالة مرسلة من الأدمن
+      const isAdminMsg = c.isAdmin || false;
+
       const isReplied = isMine && chatComments.some(orig => orig.replyTo === c.id);
       let replyContextHtml = '';
       if(c.replyTo) { const orig = chatComments.find(o => o.id === c.replyTo); if(orig) replyContextHtml = `<div class="reply-context">رداً على: "${orig.text.substring(0, 40)}"</div>`; }
+      
       let attachmentHtml = '';
       if(c.file) { 
         if(c.file.type.startsWith('image/')) {
@@ -611,14 +627,28 @@
         }
       }
       
-      let bubbleClass = isMine ? 'mine' : 'other'; if(isReplied) bubbleClass += ' replied';
-      const replyBtn = !isMine ? `<button class="action-btn" onclick="setReply('${c.id}', '${c.userId}')"><i class="fa-solid fa-reply"></i> رد</button>` : '';
+      // تنسيق الرسالة: إذا كانت رسالتي أو رسالة الأدمن تظهر على اليسار، وإلا على اليمين
+      let bubbleClass = (isMine || isAdminMsg) ? 'mine' : 'other'; 
+      if(isReplied) bubbleClass += ' replied';
+      
+      // زر الرد يظهر فقط على رسائل الآخرين (ليس رسائلي ولا رسائل الأدمن إذا كنت أنا الأدمن)
+      const replyBtn = (!isMine && !isAdminMsg) ? `<button class="action-btn" onclick="setReply('${c.id}', '${c.userId}')"><i class="fa-solid fa-reply"></i> رد</button>` : '';
+
+      // إضافة اسم "Admin" إذا كانت الرسالة من الأدمن
+      const adminLabelHtml = isAdminMsg ? `<div class="admin-label"><i class="fa-solid fa-user-shield"></i> Admin</div>` : '';
 
       html += `<div class="chat-bubble ${bubbleClass}" id="${c.id}">
         ${isReplied ? '<div class="reply-notification"><i class="fa-solid fa-reply-all"></i> تم الرد عليك</div>' : ''}
-        ${replyContextHtml}<div class="bubble-text">${c.text}${attachmentHtml}</div><div class="meta-time">${c.time}</div>
-        <div class="bubble-actions">${replyBtn}<button class="action-btn ${savedBookmarks.includes(c.id) ? 'saved' : ''}" onclick="toggleBookmark('${c.id}')"><i class="fa-${savedBookmarks.includes(c.id) ? 'solid' : 'regular'} fa-bookmark"></i> ${savedBookmarks.includes(c.id) ? 'محفوظ' : 'حفظ'}</button>
-        <button class="action-btn delete-btn" onclick="deleteComment('${c.id}')"><i class="fa-solid fa-trash"></i> حذف</button></div></div>`;
+        ${replyContextHtml}
+        <div class="bubble-text">${c.text}${attachmentHtml}</div>
+        ${adminLabelHtml}
+        <div class="meta-time">${c.time}</div>
+        <div class="bubble-actions">
+          ${replyBtn}
+          <button class="action-btn ${savedBookmarks.includes(c.id) ? 'saved' : ''}" onclick="toggleBookmark('${c.id}')"><i class="fa-${savedBookmarks.includes(c.id) ? 'solid' : 'regular'} fa-bookmark"></i> ${savedBookmarks.includes(c.id) ? 'محفوظ' : 'حفظ'}</button>
+          <button class="action-btn delete-btn" onclick="deleteComment('${c.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
+        </div>
+      </div>`;
     });
     feed.innerHTML = html;
     renderSavedSection();
@@ -671,7 +701,6 @@
       if(f.file.type.startsWith('image/')) {
         contentHtml = `<img src="${f.file.url}" onclick="openImageViewer('${f.file.url}')">`;
       } else if(f.file.type === 'application/pdf') {
-        const driveViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(f.file.url)}&embedded=true`;
         contentHtml = `<div style="padding:1rem; text-align:center;"><i class="fa-solid fa-file-pdf" style="font-size:2rem;color:var(--danger);"></i></div>`;
       } else {
         contentHtml = `<div style="padding:1rem; text-align:center;"><i class="fa-solid fa-file" style="font-size:2rem;color:var(--primary);"></i></div>`;
@@ -681,8 +710,6 @@
       if(f.file.type === 'application/pdf') {
         const driveViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(f.file.url)}&embedded=true`;
         buttonsHtml = `<a href="#" onclick="openPDFViewer('${driveViewerUrl}'); return false;">عرض</a><a href="${f.file.url}" download="${f.file.name}">تحميل</a>`;
-      } else if(f.file.type.startsWith('image/')) {
-        buttonsHtml = `<a href="${f.file.url}" download="${f.file.name}" style="grid-column:1/-1;">تحميل</a>`;
       } else {
         buttonsHtml = `<a href="${f.file.url}" download="${f.file.name}" style="grid-column:1/-1;">تحميل</a>`;
       }
