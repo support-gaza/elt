@@ -24,14 +24,14 @@
 
   /* شريط الأخبار (الأحمر) */
   .news-ticker { background: rgba(239, 68, 68, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.9rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 1px solid #b91c1c; }
-  .ticker-track { display: flex; width: max-content; animation: scroll-ticker 25s linear infinite; }
-  .ticker-text { padding-left: 50px; display: inline-block; }
-  @keyframes scroll-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
+  .ticker-track { display: flex; width: max-content; animation: scroll-ticker 20s linear infinite; }
+  .ticker-text { padding-left: 100px; display: inline-block; }
+  @keyframes scroll-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
   /* شريط الأذكار (الأخضر) */
   .dhikr-ticker { background: rgba(22, 101, 52, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.9rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 1px solid #14532d; }
-  .dhikr-track { display: flex; width: max-content; animation: scroll-ticker 25s linear infinite; }
-  .dhikr-text { padding-left: 50px; display: inline-block; }
+  .dhikr-track { display: flex; width: max-content; animation: scroll-ticker 20s linear infinite; }
+  .dhikr-text { padding-left: 100px; display: inline-block; }
 
   header { position: sticky; top: 0; z-index: 999; background: rgba(10, 20, 32, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0.7rem 1rem; }
   nav { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
@@ -134,12 +134,6 @@
   .vote-btn:hover { background: var(--success); color: #000; }
   .admin-reply { background: rgba(251,191,36,0.1); border-right: 3px solid var(--secondary); padding: 0.6rem; margin-top: 0.5rem; border-radius: 4px; font-size: 0.9rem; }
 
-  .sites-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
-  .site-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1rem; text-align: center; text-decoration: none; color: var(--text); transition: 0.3s; }
-  .site-item:hover { transform: translateY(-4px); border-color: var(--primary); }
-  .site-item img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; margin-bottom: 0.5rem; }
-  .site-item span { display: block; font-weight: 700; font-size: 0.9rem; }
-
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 2000; padding: 1rem; overflow-y: auto; }
   .modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
   .modal { background: #0f1a2b; border: 1px solid var(--primary); border-radius: 24px; max-width: 800px; width: 100%; margin: 2rem auto; max-height: 90vh; overflow-y: auto; }
@@ -202,10 +196,6 @@
   .admin-field input, .admin-field select { width: 100%; padding: 0.8rem; border-radius: 8px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: #fff; font-family: inherit; }
 
   footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; margin-top: 3rem; border-top: 1px solid var(--border); background: rgba(5, 10, 18, 0.9); }
-  
-  /* أعلام في الفوتر */
-  .footer-flags { display: flex; justify-content: center; gap: 1rem; margin-top: 0.8rem; }
-  .footer-flags img { width: 30px; height: 20px; border-radius: 2px; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
 
   @media (max-width: 768px) {
     .nav-menu { display: none; flex-direction: column; position: absolute; top: 100%; right: 0; left: 0; background: #0a1420; padding: 1rem; border-bottom: 1px solid var(--border); }
@@ -249,7 +239,6 @@
       <li><a href="#chat">💬 الشات</a></li>
       <li><a href="#tools">📊 حساب المعدل</a></li>
       <li><a href="#report">⚠️ الأخطاء</a></li>
-      <li><a href="#sites">🌐 مواقع أخرى</a></li>
       <li><button onclick="openAdminModal()">🔐 الأدمن</button></li>
     </ul>
   </nav>
@@ -329,13 +318,6 @@
   </div>
 </section>
 
-<section id="sites">
-  <div class="section-head"><h2>🌐 مواقع أخرى</h2><p>مواقع مفيدة ومشاريع أخرى</p></div>
-  <div class="sites-grid" id="sitesGrid">
-    <div style="text-align:center; grid-column:1/-1; color:var(--muted); padding:2rem;">لا يوجد مواقع أخرى حالياً. سيتم إضافتها قريباً.</div>
-  </div>
-</section>
-
 <div class="modal-overlay" id="subjectModal" onclick="if(event.target===this)closeSubject()"><div class="modal"><div class="modal-header"><div class="modal-title-wrap"><h2 id="modalTitle">المادة</h2><p id="modalSubtitle"></p></div><button class="modal-close" onclick="closeSubject()">✕</button></div><div class="modal-body" id="modalBody"></div></div></div>
 
 <div class="modal-overlay" id="adminModal" onclick="if(event.target===this)closeAdmin()">
@@ -363,10 +345,6 @@
 <footer>
   <p style="margin-bottom: 0.5rem;">© 2026 كهروتقنية Group A</p>
   <p style="color: var(--primary); font-weight: bold;">صنع بواسطة DeepSeek</p>
-  <div class="footer-flags">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Palestine.svg/1200px-Flag_of_Palestine.svg.png" alt="فلسطين">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/1200px-Flag_of_Algeria.svg.png" alt="الجزائر">
-  </div>
 </footer>
 
 <script>
@@ -391,20 +369,9 @@
     eenvi: { img: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=400&q=80', title: 'EENVI', subtitle: 'Électrotechnique et Environnement', program: ['Chapitre 1: Énergie et environnement', 'Chapitre 2: Impacts environnementaux', 'Chapitre 3: Qualité de l\'énergie', 'Chapitre 4: Harmoniques', 'Chapitre 5: Compensation d\'énergie réactive'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] }
   };
 
-  let OTHER_SITES = [];
-
   function renderSubjects() {
     const grid = document.getElementById('subjectsGrid');
     grid.innerHTML = Object.keys(SUBJECTS).map(key => `<div onclick="openSubject('${key}')" class="card"><img src="${SUBJECTS[key].img}" class="card-img"><h3>${SUBJECTS[key].title}</h3><p>${SUBJECTS[key].subtitle}</p></div>`).join('');
-  }
-
-  function renderSites() {
-    const grid = document.getElementById('sitesGrid');
-    if (OTHER_SITES.length === 0) {
-      grid.innerHTML = '<div style="text-align:center; grid-column:1/-1; color:var(--muted); padding:2rem;">لا يوجد مواقع أخرى حالياً. سيتم إضافتها قريباً.</div>';
-      return;
-    }
-    grid.innerHTML = OTHER_SITES.map(s => `<a href="${s.url}" target="_blank" class="site-item"><img src="${s.img}" alt="${s.name}"><span>${s.name}</span></a>`).join('');
   }
 
   function openSubject(key) {
@@ -887,7 +854,7 @@
   }
 
   window.onload = async () => {
-    renderSubjects(); renderSites(); initGrades(); await loadComments();
+    renderSubjects(); initGrades(); await loadComments();
     setInterval(loadComments, 3000); 
   };
 </script>
