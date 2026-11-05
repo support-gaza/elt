@@ -1,1 +1,640 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a1420">
+<title>كهروتقني | منصة هندسة إلكترونية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Reem+Kufi:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --primary: #00d4ff; --secondary: #fbbf24; --danger: #ef4444; --success: #4ade80;
+    --dark-bg: #0a1420; --card-bg: rgba(15, 25, 40, 0.85); --text: #e8f0f8; --muted: #94a3b8; --border: rgba(0, 212, 255, 0.15);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Cairo', sans-serif; background: var(--dark-bg); color: var(--text); line-height: 1.7; min-height: 100vh; padding-bottom: 75px; overflow-x: hidden; }
 
+  .video-bg { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: #0a1420; }
+  .video-bg video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.35) saturate(1.2); }
+  .video-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 20, 32, 0.7) 0%, rgba(10, 20, 32, 0.95) 100%); pointer-events: none; }
+
+  .news-ticker { background: rgba(239, 68, 68, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.9rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 1px solid #b91c1c; }
+  .ticker-track { display: flex; width: max-content; animation: scroll-ticker 30s linear infinite; }
+  .ticker-text { padding-left: 50px; display: inline-block; }
+  @keyframes scroll-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
+
+  .dhikr-ticker { background: rgba(22, 101, 52, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.9rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 1px solid #14532d; }
+  .dhikr-track { display: flex; width: max-content; animation: scroll-ticker 35s linear infinite reverse; }
+  .dhikr-text { padding-left: 50px; display: inline-block; }
+
+  header { position: sticky; top: 0; z-index: 999; background: rgba(10, 20, 32, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0.7rem 1rem; }
+  nav { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 900; font-size: 1.1rem; }
+  .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .logo-text { font-family: 'Reem Kufi', sans-serif; font-size: 1.4rem; background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-menu { display: flex; list-style: none; gap: 0.2rem; align-items: center; }
+  .nav-menu a, .nav-menu button { color: var(--text); text-decoration: none; font-weight: 600; padding: 0.5rem 0.9rem; border-radius: 8px; transition: 0.3s; font-size: 0.88rem; background: transparent; border: none; cursor: pointer; font-family: inherit; }
+  .nav-menu a:hover, .nav-menu a.active, .nav-menu button:hover { background: rgba(0, 212, 255, 0.12); color: var(--primary); }
+  .menu-toggle { display: none; background: transparent; border: none; color: var(--primary); font-size: 1.5rem; cursor: pointer; }
+
+  section { max-width: 1300px; margin: 3rem auto; padding: 0 1rem; }
+  .section-head { text-align: center; margin-bottom: 2.5rem; }
+  .section-head h2 { font-size: 1.8rem; font-weight: 900; color: #fff; }
+  .section-head p { color: var(--muted); font-size: 0.95rem; }
+
+  .hero-card { position: relative; background: var(--card-bg); backdrop-filter: blur(24px); border: 1px solid rgba(0, 212, 255, 0.4); border-radius: 28px; padding: 5rem 2rem; text-align: center; overflow: hidden; box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1); }
+  .hero-card::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat; opacity: 0.35; z-index: 0; }
+  .hero-card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(10, 20, 32, 0.9) 0%, rgba(10, 20, 32, 0.5) 60%, transparent 100%); z-index: 1; }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-card h1 { font-family: 'Reem Kufi', sans-serif; font-size: 3.5rem; font-weight: 900; margin-bottom: 0.6rem; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.9); }
+  .hero-card .subtitle { font-size: 1.2rem; color: var(--primary); margin-bottom: 2rem; font-weight: bold; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
+  .hero-badges { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .hero-badge { background: rgba(0, 0, 0, 0.7); border: 1px solid var(--primary); padding: 0.6rem 1.5rem; border-radius: 50px; font-size: 0.9rem; color: #fff; backdrop-filter: blur(5px); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.3rem; }
+  .card { background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 20px; padding: 1.6rem; transition: 0.35s; cursor: pointer; overflow: hidden; }
+  .card:hover { transform: translateY(-6px); border-color: rgba(0, 212, 255, 0.4); }
+  .card-img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1); }
+  .card h3 { font-size: 1.15rem; color: var(--primary); margin-bottom: 0.5rem; }
+  .card p { color: var(--muted); font-size: 0.9rem; }
+
+  .forum-container { max-width: 800px; margin: 0 auto; }
+  .warning-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+  
+  .comments-feed { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 2rem; }
+  .comment-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; }
+  
+  .comment-box textarea { width: 100%; min-height: 80px; padding: 1rem; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; font-family: inherit; resize: vertical; margin-bottom: 1rem; }
+  .comment-box textarea:focus { outline: none; border-color: var(--primary); }
+  .comment-actions { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .file-upload-label { background: rgba(251, 191, 36, 0.15); color: var(--secondary); padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; border: 1px solid rgba(251, 191, 36, 0.3); transition: 0.3s; }
+  .file-upload-label:hover { background: var(--secondary); color: #000; }
+  .btn-post { background: var(--primary); color: #000; padding: 0.6rem 1.5rem; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; }
+
+  .day-separator { text-align: center; margin: 1.5rem 0 0.5rem; position: relative; }
+  .day-separator::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.1); z-index: 1; }
+  .day-separator span { background: var(--dark-bg); padding: 0 1rem; color: var(--muted); font-size: 0.85rem; position: relative; z-index: 2; font-weight: bold; }
+  .chat-bubble { max-width: 80%; padding: 1rem 1.2rem; border-radius: 16px; font-size: 0.95rem; line-height: 1.6; position: relative; word-wrap: break-word; display: flex; flex-direction: column; transition: background 0.3s, border-color 0.3s; }
+  .chat-bubble.mine { align-self: flex-start; background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 150, 184, 0.2)); border: 1px solid rgba(0, 212, 255, 0.4); border-bottom-left-radius: 4px; }
+  .chat-bubble.other { align-self: flex-end; background: rgba(15, 25, 40, 0.9); border: 1px solid var(--border); border-bottom-right-radius: 4px; }
+  .chat-bubble.mine.replied { background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(185, 28, 28, 0.25)); border: 1px solid rgba(239, 68, 68, 0.5); }
+  .chat-bubble .meta-time { font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem; direction: ltr; }
+  .chat-bubble.mine .meta-time { text-align: left; }
+  .chat-bubble.other .meta-time { text-align: right; }
+  .reply-notification { font-size: 0.75rem; color: #f87171; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+  .chat-bubble .bubble-text { margin-bottom: 0.5rem; }
+  .chat-bubble .bubble-text img { max-width: 100%; border-radius: 10px; margin-top: 0.8rem; display: block; cursor: pointer; }
+  .chat-bubble .bubble-text a.file-link { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0,212,255,0.1); padding: 0.5rem 1rem; border-radius: 8px; color: var(--primary); text-decoration: none; margin-top: 0.8rem; font-size: 0.85rem; border: 1px solid rgba(0,212,255,0.3); }
+  .reply-context { background: rgba(0, 0, 0, 0.3); border-right: 3px solid var(--primary); padding: 0.6rem; border-radius: 6px; margin-bottom: 0.8rem; font-size: 0.8rem; color: var(--muted); }
+  .bubble-actions { display: flex; gap: 0.8rem; margin-top: 0.5rem; align-items: center; }
+  .action-btn { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 0.8rem; transition: 0.2s; display: flex; align-items: center; gap: 0.3rem; }
+  .action-btn:hover { color: var(--primary); }
+  .action-btn.saved { color: var(--success); font-weight: bold; }
+  .action-btn.delete-btn { color: var(--danger); display: none; margin-right: auto; }
+  body.admin-mode .action-btn.delete-btn { display: flex; }
+
+  .saved-section { background: rgba(251, 191, 36, 0.05); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 16px; padding: 1rem; margin-bottom: 1.5rem; display: none; }
+  .saved-section.show { display: block; }
+  .saved-section h4 { color: var(--secondary); margin-bottom: 0.8rem; font-size: 0.95rem; }
+  .saved-item { background: rgba(0,0,0,0.3); padding: 0.6rem; border-radius: 8px; margin-bottom: 0.5rem; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+  .saved-item:hover { background: rgba(0,212,255,0.1); }
+  .saved-item button { background: transparent; border: none; color: var(--danger); cursor: pointer; }
+
+  .replying-indicator { background: rgba(0,212,255,0.1); border: 1px solid var(--primary); padding: 0.5rem 1rem; border-radius: 10px; margin-bottom: 1rem; display: none; justify-content: space-between; align-items: center; }
+  .replying-indicator.active { display: flex; }
+  .close-reply { background: var(--danger); color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; }
+
+  .grades-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.85rem; }
+  .grades-table th, .grades-table td { padding: 0.6rem; border-bottom: 1px solid var(--border); text-align: center; }
+  .grades-table th { background: rgba(0, 212, 255, 0.08); color: var(--primary); font-weight: 700; }
+  .grades-table input { width: 100%; padding: 0.4rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; text-align: center; border-radius: 6px; font-size: 0.85rem; }
+  .grades-table .avg-cell { color: var(--secondary); font-weight: 700; }
+  .average-result { background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(251, 191, 36, 0.08)); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; text-align: center; margin-top: 1rem; }
+  .average-result .value { font-size: 2.5rem; font-weight: 900; color: var(--primary); }
+
+  .report-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; max-width: 800px; margin: 0 auto; }
+  .report-section .form-group { margin-bottom: 1rem; }
+  .report-section label { display: block; color: var(--muted); font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .report-section input, .report-section textarea, .report-section select { width: 100%; padding: 0.8rem; border-radius: 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; font-family: inherit; }
+  .report-section select { cursor: pointer; }
+  .report-list { margin-top: 1.5rem; }
+  .report-item { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.8rem; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 2000; padding: 1rem; overflow-y: auto; }
+  .modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
+  .modal { background: #0f1a2b; border: 1px solid var(--primary); border-radius: 24px; max-width: 800px; width: 100%; margin: 2rem auto; max-height: 90vh; overflow-y: auto; }
+  .modal-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; position: sticky; top: 0; background: #0f1a2b; z-index: 10; }
+  .modal-title-wrap h2 { color: var(--primary); }
+  .modal-title-wrap p { color: var(--muted); font-size: 0.9rem; }
+  .modal-close { background: none; border: none; color: var(--danger); font-size: 1.5rem; cursor: pointer; }
+  .modal-body { padding: 1.5rem; }
+
+  .image-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 4000; justify-content: center; align-items: center; flex-direction: column; padding: 1rem; }
+  .image-viewer.show { display: flex; }
+  .image-viewer img { max-width: 100%; max-height: 80vh; border-radius: 8px; }
+  .image-viewer .viewer-close { position: absolute; top: 1rem; right: 1rem; background: var(--danger); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; }
+
+  .module-tabs { display: flex; gap: 0.4rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; flex-wrap: wrap; }
+  .module-tab { background: transparent; border: none; color: var(--muted); padding: 0.5rem 1rem; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.9rem; border-radius: 8px 8px 0 0; transition: 0.3s; }
+  .module-tab.active { color: var(--primary); background: rgba(0, 212, 255, 0.1); border-bottom: 2px solid var(--primary); }
+  .module-tab:hover { color: var(--primary); }
+
+  .module-section { display: none; }
+  .module-section.active { display: block; }
+  
+  .file-status { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 0.5rem; font-size: 0.9rem; }
+
+  .user-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .user-gallery-item { background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s; }
+  .user-gallery-item:hover { transform: scale(1.05); }
+  .user-gallery-item img { width: 100%; height: 120px; object-fit: cover; }
+  .user-gallery-item .label { padding: 0.5rem; font-size: 0.8rem; color: var(--text); text-align: center; }
+
+  .user-gallery-actions { background: rgba(251, 191, 36, 0.1); border: 1px dashed var(--secondary); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .user-gallery-actions input { padding: 0.6rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff; font-family: inherit; }
+  .user-gallery-actions button { background: var(--primary); color: #000; padding: 0.6rem; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+
+  .admin-modal-content { max-width: 500px; }
+  .admin-field { margin-bottom: 1rem; }
+  .admin-field label { display: block; color: var(--muted); font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .admin-field input, .admin-field select { width: 100%; padding: 0.8rem; border-radius: 8px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: #fff; font-family: inherit; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; margin-top: 3rem; border-top: 1px solid var(--border); background: rgba(5, 10, 18, 0.9); }
+
+  @media (max-width: 768px) {
+    .nav-menu { display: none; flex-direction: column; position: absolute; top: 100%; right: 0; left: 0; background: #0a1420; padding: 1rem; border-bottom: 1px solid var(--border); }
+    .nav-menu.open { display: flex; }
+    .menu-toggle { display: block; }
+    .comment-actions { flex-direction: column; align-items: stretch; }
+    .hero-card h1 { font-size: 2.5rem; }
+    .hero-card { padding: 3rem 1rem; }
+    .grades-table { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="news-ticker">
+  <div class="ticker-track">
+    <span class="ticker-text"><span style="color: #fff; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 5px; margin-left: 10px;">📢 إخبار:</span> هناك فرض في مادة ELN يوم الأربعاء. بالتوفيق للجميع!</span>
+    <span class="ticker-text"><span style="color: #fff; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 5px; margin-left: 10px;">📢 إخبار:</span> هناك فرض في مادة ELN يوم الأربعاء. بالتوفيق للجميع!</span>
+  </div>
+</div>
+
+<div class="dhikr-ticker">
+  <div class="dhikr-track">
+    <span class="dhikr-text">✨ اللهم صل وسلم على نبينا محمد &nbsp;&nbsp;|&nbsp;&nbsp; سبحان الله وبحمده، سبحان الله العظيم &nbsp;&nbsp;|&nbsp;&nbsp; لا إله إلا الله وحده لا شريك له &nbsp;&nbsp;|&nbsp;&nbsp; أستغفر الله العظيم وأتوب إليه</span>
+    <span class="dhikr-text">✨ اللهم صل وسلم على نبينا محمد &nbsp;&nbsp;|&nbsp;&nbsp; سبحان الله وبحمده، سبحان الله العظيم &nbsp;&nbsp;|&nbsp;&nbsp; لا إله إلا الله وحده لا شريك له &nbsp;&nbsp;|&nbsp;&nbsp; أستغفر الله العظيم وأتوب إليه</span>
+  </div>
+</div>
+
+<div class="video-bg"><video autoplay muted loop playsinline><source src="https://videos.pexels.com/video-files/1409899/1409899-hd_1920_1080_25fps.mp4" type="video/mp4"></video></div>
+<div class="video-overlay"></div>
+
+<header>
+  <nav>
+    <div class="logo"><div class="logo-icon"><i class="fa-solid fa-bolt"></i></div><div class="logo-text">كهروتقني</div></div>
+    <button class="menu-toggle" onclick="document.getElementById('navMenu').classList.toggle('open')"><i class="fa-solid fa-bars"></i></button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="#home" class="active">🏠 الرئيسية</a></li>
+      <li><a href="#courses">📚 الدروس</a></li>
+      <li><a href="#tools">📊 حساب المعدل</a></li>
+      <li><a href="#chat">💬 الشات</a></li>
+      <li><a href="#report">⚠️ الأخطاء</a></li>
+      <li><button onclick="openAdminModal()">🔐 الأدمن</button></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-card">
+    <div class="hero-content">
+      <h1>كهروتقني</h1>
+      <p class="subtitle">منصة هندسة إلكترونية</p>
+      <div class="hero-badges">
+        <span class="hero-badge">L2 ELT - Groupe A</span>
+        <span class="hero-badge">Electrotechnique</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="courses">
+  <div class="section-head"><h2>📚 الدروس</h2><p>اضغط على أي مادة لعرض برنامجها</p></div>
+  <div class="cards" id="subjectsGrid"></div>
+</section>
+
+<section id="tools">
+  <div class="section-head"><h2>📊 حساب المعدل</h2></div>
+  <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; max-width: 900px; margin: 0 auto;">
+    <div class="warning-banner" style="background: rgba(0, 212, 255, 0.05); border-color: rgba(0, 212, 255, 0.2); color: var(--primary); margin-bottom: 1.5rem; font-size: 0.85rem;"><i class="fa-solid fa-info-circle"></i> نظام LMD: نقطة المادة = (نقطة الفرض × 0.4) + (نقطة الاختبار × 0.6)</div>
+    <div style="overflow-x: auto;">
+      <table class="grades-table" id="gradesTable">
+        <thead><tr><th>المادة</th><th>الفرض /20</th><th>الاختبار /20</th><th>نقطة المادة</th><th>المعامل</th></tr></thead>
+        <tbody id="gradesBody"></tbody>
+      </table>
+    </div>
+    <button class="btn-post" onclick="calculateAverage()" style="width: 100%; margin-bottom: 1rem;">✅ احسب المعدل</button>
+    <div class="average-result" id="averageResult" style="display: none;"><div style="color: var(--muted);">معدلك الفصلي</div><div class="value" id="averageValue">--</div><div style="color: var(--secondary);" id="averageMention"></div></div>
+  </div>
+</section>
+
+<section id="chat">
+  <div class="section-head"><h2>💬 شات الطلاب</h2><p>مساحة للنقاش الدراسي وتبادل الحلول</p></div>
+  <div class="forum-container">
+    <div class="warning-banner"><i class="fa-solid fa-triangle-exclamation"></i> ملاحظة: أي محتوى لا يتعلق بالدراسة أو التخصص سيمحى فوراً.</div>
+    <div class="saved-section" id="savedSection"><h4><i class="fa-solid fa-bookmark"></i> التعليقات المحفوظة</h4><div id="savedList"></div></div>
+    <div class="comments-feed" id="commentsFeed"></div>
+    <div class="comment-box">
+      <div class="replying-indicator" id="replyIndicator"><span>أنت ترد على تعليق...</span><button class="close-reply" onclick="cancelReply()">✕</button></div>
+      <textarea id="commentInput" placeholder="اكتب رسالتك هنا..."></textarea>
+      <div id="attachmentPreview" style="display: none; margin-bottom: 1rem; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 8px; align-items: center; gap: 1rem;">
+        <span id="fileName" style="font-size: 0.85rem; color: var(--primary);"></span>
+        <button onclick="removeAttachment()" style="background: var(--danger); color: white; border: none; border-radius: 4px; padding: 0.2rem 0.5rem; cursor: pointer;">حذف</button>
+      </div>
+      <div class="comment-actions">
+        <div><label for="fileInput" class="file-upload-label"><i class="fa-solid fa-paperclip"></i> إرفاق صورة / ملف</label><input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)" accept="image/*,.pdf,.doc,.docx"></div>
+        <button class="btn-post" onclick="postComment()"><i class="fa-solid fa-paper-plane"></i> إرسال</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="report">
+  <div class="section-head"><h2>⚠️ الإبلاغ عن خطأ</h2><p>ساعدنا في تحسين المنصة، أبلغنا عن أي خطأ تقني أو دراسي</p></div>
+  <div class="report-section">
+    <div class="form-group"><label>نوع الخطأ:</label><select id="reportType"><option value="technical">خطأ تقني في الموقع</option><option value="academic">خطأ في محتوى الدراسة</option></select></div>
+    <div class="form-group"><label>تفاصيل الخطأ:</label><textarea id="reportText" placeholder="اشرح الخطأ بالتفصيل..." style="min-height: 100px;"></textarea></div>
+    <button class="btn-post" onclick="submitReport()" style="width: 100%;">📤 إرسال الإبلاغ</button>
+    <div class="report-list" id="reportList" style="display: none;"><h4 style="color: var(--secondary); margin-bottom: 1rem;">الأخطاء المبلغ عنها:</h4><div id="reportsContainer"></div></div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="subjectModal" onclick="if(event.target===this)closeSubject()"><div class="modal"><div class="modal-header"><div class="modal-title-wrap"><h2 id="modalTitle">المادة</h2><p id="modalSubtitle"></p></div><button class="modal-close" onclick="closeSubject()">✕</button></div><div class="modal-body" id="modalBody"></div></div></div>
+
+<div class="modal-overlay" id="adminModal" onclick="if(event.target===this)closeAdmin()">
+  <div class="modal admin-modal-content">
+    <div class="modal-header"><div class="modal-title-wrap"><h2>🔐 لوحة الأدمن</h2></div><button class="modal-close" onclick="closeAdmin()">✕</button></div>
+    <div class="modal-body">
+      <div id="adminLogin"><div class="admin-field"><label>كلمة المرور</label><input type="password" id="adminPass" placeholder="أدخل كلمة المرور"></div><button class="btn-post" onclick="checkAdminPass()" style="width: 100%;">دخول</button></div>
+      <div id="adminPanel" style="display: none;">
+        <div class="admin-field"><label>اختر المادة</label><select id="adminSubject"></select></div>
+        <div class="admin-field"><label>نوع الملف</label><select id="adminType"><option value="cours">Cours</option><option value="td">TD</option><option value="tp">TP</option><option value="summaries">ملخصات</option><option value="td_solutions">حلول TD</option></select></div>
+        <div class="admin-field"><label>عنوان الملف</label><input type="text" id="adminTitle" placeholder="Chapitre 1"></div>
+        <div class="admin-field"><label>رابط Google Drive</label><input type="url" id="adminUrl" placeholder="https://drive.google.com/..."></div>
+        <button class="btn-post" onclick="addAdminFile()" style="width: 100%; margin-bottom: 0.5rem;">➕ إضافة الملف</button>
+        <button class="btn-post" onclick="closeAdmin()" style="width: 100%; background: var(--danger); color: white;">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="image-viewer" id="imageViewer" onclick="closeImageViewer()"><button class="viewer-close" onclick="closeImageViewer()">✕</button><img id="viewerImage" src="" alt="عرض الصورة"></div>
+
+<footer><p style="margin-bottom: 0.5rem;">© 2026 كهروتقنية Group A</p><p style="color: var(--primary); font-weight: bold;">صنع بواسطة DeepSeek</p></footer>
+
+<script>
+  const ADMIN_PASSWORD = 'admin123'; 
+  const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6aea55baac6210605a6a0948/latest'; 
+  const JSONBIN_KEY = '$2a$10$2cX0GYGNVvA72tcUB73SwuO.Wn2cKzgo.uG6Gjgu1P5ahKuU/G5fO'; 
+
+  let currentUser = JSON.parse(localStorage.getItem('forumUser'));
+  if (!currentUser) { currentUser = { id: 'user_' + Date.now() }; localStorage.setItem('forumUser', JSON.stringify(currentUser)); }
+
+  let SUBJECTS = {
+    maths3: { img: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=400&q=80', title: 'MATHS 3', subtitle: 'Analyse 3', program: ['Chapitre 1: Suites et séries', 'Chapitre 2: Séries entières', 'Chapitre 3: Séries de Fourier', 'Chapitre 4: Intégrales multiples', 'Chapitre 5: Équations différentielles'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] },
+    elnf1: { img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80', title: 'ELNF1', subtitle: 'Électronique Numérique', program: ['Chapitre 1: Systèmes de numération', 'Chapitre 2: Algèbre de Boole', 'Chapitre 3: Portes logiques', 'Chapitre 4: Karnaugh', 'Chapitre 5: Circuits combinatoires', 'Chapitre 6: Bascules'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] },
+    eltf1: { img: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=400&q=80', title: 'ELTF1', subtitle: 'Électrotechnique', program: ['Chapitre 1: Circuits magnétiques', 'Chapitre 2: Matériaux magnétiques', 'Chapitre 3: Transformateurs monophasés', 'Chapitre 4: Transformateurs triphasés', 'Chapitre 5: Machines à courant continu'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] },
+    ov: { img: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=400&q=80', title: 'OV', subtitle: 'Ondes et Vibrations', program: ['Chapitre 1: Oscillations libres', 'Chapitre 2: Oscillations amorties et forcées', 'Chapitre 3: Ondes progressives', 'Chapitre 4: Ondes stationnaires', 'Chapitre 5: Réflexion et réfraction'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] },
+    psta: { img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80', title: 'PSTA', subtitle: 'Probabilités', program: ['Chapitre 1: Espaces probabilisés', 'Chapitre 2: Probabilités conditionnelles', 'Chapitre 3: Variables aléatoires', 'Chapitre 4: Lois usuelles', 'Chapitre 5: Convergences'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] },
+    progpy: { img: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=400&q=80', title: 'ProgPy', subtitle: 'Programmation Python', program: ['Chapitre 1: Introduction', 'Chapitre 2: Variables et types', 'Chapitre 3: Boucles et conditions', 'Chapitre 4: Fonctions', 'Chapitre 5: Listes et dictionnaires', 'Chapitre 6: NumPy et Matplotlib'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] },
+    eage: { img: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=400&q=80', title: 'EAGE', subtitle: 'Énergies Alternatives', program: ['Chapitre 1: Énergies renouvelables', 'Chapitre 2: Rayonnement solaire', 'Chapitre 3: Photovoltaïque', 'Chapitre 4: Éolien', 'Chapitre 5: Stockage', 'Chapitre 6: Onduleurs'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] },
+    eenvi: { img: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=400&q=80', title: 'EENVI', subtitle: 'Électrotechnique et Environnement', program: ['Chapitre 1: Énergie et environnement', 'Chapitre 2: Impacts environnementaux', 'Chapitre 3: Qualité de l\'énergie', 'Chapitre 4: Harmoniques', 'Chapitre 5: Compensation d\'énergie réactive'], cours: [], td: [], tp: [], summaries: [], td_solutions: [] }
+  };
+
+  function renderSubjects() {
+    const grid = document.getElementById('subjectsGrid');
+    grid.innerHTML = Object.keys(SUBJECTS).map(key => `<div onclick="openSubject('${key}')" class="card"><img src="${SUBJECTS[key].img}" class="card-img"><h3>${SUBJECTS[key].title}</h3><p>${SUBJECTS[key].subtitle}</p></div>`).join('');
+  }
+
+  function openSubject(key) {
+    const s = SUBJECTS[key];
+    document.getElementById('modalTitle').textContent = s.title;
+    document.getElementById('modalSubtitle').textContent = s.subtitle;
+    
+    let tabsHtml = `<button class="module-tab active" onclick="switchTab('${key}', 'program')">📋 البرنامج</button><button class="module-tab" onclick="switchTab('${key}', 'cours')">📘 Cours</button><button class="module-tab" onclick="switchTab('${key}', 'td')">✏️ TD</button>`;
+    if(key === 'ov' || key === 'elnf1') tabsHtml += `<button class="module-tab" onclick="switchTab('${key}', 'tp')">🔬 TP</button>`;
+    tabsHtml += `<button class="module-tab" onclick="switchTab('${key}', 'summaries')">📝 ملخصات</button><button class="module-tab" onclick="switchTab('${key}', 'td_solutions')">✅ حلول TD</button><button class="module-tab" onclick="switchTab('${key}', 'user-gallery')">🖼️ معرض المستخدمين</button>`;
+
+    let html = `<div class="module-tabs">${tabsHtml}</div>`;
+    html += `<div class="module-section active" id="section-program-${key}"><h4 style="color: var(--secondary); margin-bottom: 1rem;">البرنامج الدراسي</h4>${s.program.map(p => `<div class="file-status"><span>${p}</span></div>`).join('')}</div>`;
+
+    const buildSection = (arr, type, msg) => `<div class="module-section" id="section-${type}-${key}">${arr.length > 0 ? arr.map(f => `<div class="file-status" style="cursor:pointer;" onclick="window.open('${f.url}', '_blank')"><span>📄 ${f.title}</span><span style="color:var(--primary);">تحميل ←</span></div>`).join('') : `<p style="color:var(--muted);text-align:center;padding:1rem;">${msg}</p>`}</div>`;
+
+    html += buildSection(s.cours, 'cours', 'لا توجد ملفات Cours.');
+    html += buildSection(s.td, 'td', 'لا توجد ملفات TD.');
+    if(key === 'ov' || key === 'elnf1') html += buildSection(s.tp, 'tp', 'لا توجد ملفات TP.');
+    html += buildSection(s.summaries, 'summaries', 'لا توجد ملخصات.');
+    html += buildSection(s.td_solutions, 'td_solutions', 'لا توجد حلول TD.');
+
+    html += `<div class="module-section" id="section-user-gallery-${key}">
+      <h4 style="color:var(--secondary);margin-bottom:1rem;">الملفات المرسلة:</h4>
+      <div class="user-gallery" id="userGallery-${key}"></div>
+      <div class="user-gallery-actions">
+        <h4 style="margin:0;color:var(--secondary);font-size:1rem;margin-bottom:0.5rem;">إرسال ملف جديد:</h4>
+        <input type="text" id="userFileLabel-${key}" placeholder="عنوان الملف" style="width:100%;">
+        <input type="file" id="userFile-${key}" accept="image/*,.pdf,.doc,.docx" style="width:100%;">
+        <button onclick="uploadUserFile('${key}')"><i class="fa-solid fa-paper-plane"></i> إرسال</button>
+      </div>
+    </div>`;
+
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('subjectModal').classList.add('show');
+    loadUserGallery(key);
+  }
+
+  function switchTab(key, tab) {
+    document.querySelectorAll(`#modalBody .module-tab`).forEach(t => t.classList.remove('active'));
+    document.querySelectorAll(`#modalBody .module-section`).forEach(s => s.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(`section-${tab}-${key}`).classList.add('active');
+  }
+
+  function closeSubject() { document.getElementById('subjectModal').classList.remove('show'); }
+
+  let commentsData = [], reportsData = [];
+  let savedBookmarks = JSON.parse(localStorage.getItem('forumBookmarks') || '[]');
+  let activeReplyId = null, attachedFileData = null;
+
+  async function loadComments() {
+    try {
+      const res = await fetch(JSONBIN_URL, { headers: { 'X-Master-Key': JSONBIN_KEY } });
+      const data = await res.json();
+      commentsData = data.record?.comments || [];
+      reportsData = data.record?.reports || [];
+      renderComments(); renderReports();
+    } catch(e) { console.error('خطأ في التحميل', e); }
+  }
+
+  async function saveDataToCloud(newComments, newReports) {
+    try {
+      await fetch(JSONBIN_URL.replace('/latest', ''), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+        body: JSON.stringify({ comments: newComments, reports: newReports })
+      });
+      commentsData = newComments; reportsData = newReports;
+      renderComments(); renderReports();
+    } catch(e) { alert('حدث خطأ في الحفظ.'); }
+  }
+
+  function compressImage(file, callback) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 500; // حجم صغير جداً لضمان بقاءه
+        let width = img.width;
+        let height = img.height;
+        if(width > MAX_WIDTH) { height = Math.round((height * MAX_WIDTH) / width); width = MAX_WIDTH; }
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        callback(canvas.toDataURL('image/jpeg', 0.5)); // ضغط قوي جداً
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if(!file) return;
+    if(file.size > 5 * 1024 * 1024) { alert('⚠️ الحد الأقصى 5 ميجابايت.'); event.target.value = ''; return; }
+
+    if(file.type.startsWith('image/')) {
+      compressImage(file, (compressedData) => {
+        attachedFileData = { name: file.name, type: 'image/jpeg', data: compressedData };
+        document.getElementById('fileName').textContent = `📎 ${file.name} (تم ضغطها)`;
+        document.getElementById('attachmentPreview').style.display = 'flex';
+      });
+    } else {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        attachedFileData = { name: file.name, type: file.type, data: e.target.result };
+        document.getElementById('fileName').textContent = `📎 ${file.name}`;
+        document.getElementById('attachmentPreview').style.display = 'flex';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function removeAttachment() {
+    attachedFileData = null;
+    document.getElementById('fileInput').value = '';
+    document.getElementById('attachmentPreview').style.display = 'none';
+  }
+
+  async function postComment() {
+    const input = document.getElementById('commentInput');
+    const text = input.value.trim();
+    if(!text && !attachedFileData) return alert('اكتب رسالة أو أرفق ملفاً');
+
+    const btn = event.target;
+    btn.disabled = true; btn.textContent = '⏳ جاري الإرسال...';
+
+    const now = new Date();
+    const newComment = {
+      id: 'comment_' + Date.now(),
+      userId: currentUser.id,
+      text: text,
+      file: attachedFileData,
+      time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+      date: now.toLocaleDateString('en-GB'),
+      replyTo: activeReplyId
+    };
+
+    await saveDataToCloud([...commentsData, newComment], reportsData);
+    input.value = ''; removeAttachment(); cancelReply();
+    btn.disabled = false; btn.textContent = 'إرسال';
+  }
+
+  function setReply(commentId, ownerId) {
+    if(ownerId === currentUser.id) return; 
+    activeReplyId = commentId;
+    document.getElementById('replyIndicator').classList.add('active');
+    document.getElementById('commentInput').focus();
+  }
+
+  function cancelReply() {
+    activeReplyId = null;
+    document.getElementById('replyIndicator').classList.remove('active');
+  }
+
+  function toggleBookmark(commentId) {
+    const index = savedBookmarks.indexOf(commentId);
+    if(index === -1) savedBookmarks.push(commentId); else savedBookmarks.splice(index, 1);
+    localStorage.setItem('forumBookmarks', JSON.stringify(savedBookmarks));
+    renderComments();
+  }
+
+  function scrollToComment(commentId) {
+    const el = document.getElementById(commentId);
+    if(el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.background = 'rgba(0, 212, 255, 0.4)'; setTimeout(() => { el.style.background = ''; }, 1500); }
+  }
+
+  function renderSavedSection() {
+    const section = document.getElementById('savedSection');
+    const list = document.getElementById('savedList');
+    const savedComments = commentsData.filter(c => savedBookmarks.includes(c.id) && !c.subjectKey);
+    if(savedComments.length === 0) { section.classList.remove('show'); return; }
+    section.classList.add('show');
+    list.innerHTML = savedComments.map(c => `<div class="saved-item" onclick="scrollToComment('${c.id}')"><span>${c.text.substring(0, 30)}...</span><button onclick="event.stopPropagation(); toggleBookmark('${c.id}')">✕</button></div>`).join('');
+  }
+
+  async function deleteComment(commentId) {
+    if(!confirm('حذف الرسالة؟')) return;
+    await saveDataToCloud(commentsData.filter(c => c.id !== commentId), reportsData);
+  }
+
+  function renderComments() {
+    const feed = document.getElementById('commentsFeed');
+    const chatComments = commentsData.filter(c => !c.subjectKey);
+    if(chatComments.length === 0) { feed.innerHTML = '<p style="text-align:center;color:var(--muted);">لا توجد رسائل بعد.</p>'; renderSavedSection(); return; }
+
+    let lastDate = ""; let html = "";
+    chatComments.forEach(c => {
+      if (c.date !== lastDate) { html += `<div class="day-separator"><span>اليوم: ${c.date}</span></div>`; lastDate = c.date; }
+      const isMine = c.userId === currentUser.id;
+      const isReplied = isMine && chatComments.some(orig => orig.replyTo === c.id);
+      let replyContextHtml = '';
+      if(c.replyTo) { const orig = chatComments.find(o => o.id === c.replyTo); if(orig) replyContextHtml = `<div class="reply-context">رداً على: "${orig.text.substring(0, 40)}"</div>`; }
+      let attachmentHtml = '';
+      if(c.file) { attachmentHtml = c.file.type.startsWith('image/') ? `<img src="${c.file.data}" onclick="openImageViewer('${c.file.data}')">` : `<a href="${c.file.data}" download="${c.file.name}" class="file-link"><i class="fa-solid fa-download"></i> ${c.file.name}</a>`; }
+      
+      let bubbleClass = isMine ? 'mine' : 'other'; if(isReplied) bubbleClass += ' replied';
+      const replyBtn = !isMine ? `<button class="action-btn" onclick="setReply('${c.id}', '${c.userId}')"><i class="fa-solid fa-reply"></i> رد</button>` : '';
+
+      html += `<div class="chat-bubble ${bubbleClass}" id="${c.id}">
+        ${isReplied ? '<div class="reply-notification"><i class="fa-solid fa-reply-all"></i> تم الرد عليك</div>' : ''}
+        ${replyContextHtml}<div class="bubble-text">${c.text}${attachmentHtml}</div><div class="meta-time">${c.time}</div>
+        <div class="bubble-actions">${replyBtn}<button class="action-btn ${savedBookmarks.includes(c.id) ? 'saved' : ''}" onclick="toggleBookmark('${c.id}')"><i class="fa-solid ${savedBookmarks.includes(c.id) ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i> ${savedBookmarks.includes(c.id) ? 'محفوظ' : 'حفظ'}</button>
+        <button class="action-btn delete-btn" onclick="deleteComment('${c.id}')"><i class="fa-solid fa-trash"></i> حذف</button></div></div>`;
+    });
+    feed.innerHTML = html;
+    renderSavedSection();
+  }
+
+  async function uploadUserFile(subjectKey) {
+    const fileInput = document.getElementById(`userFile-${subjectKey}`);
+    const labelInput = document.getElementById(`userFileLabel-${subjectKey}`);
+    const file = fileInput.files[0]; const label = labelInput.value.trim();
+
+    if(!file && !label) return alert('اكتب عنواناً وأرفق ملفاً.');
+    if(!file) return alert('أرفق ملفاً.');
+    if(!label) return alert('اكتب عنواناً.');
+    if(file.size > 5 * 1024 * 1024) return alert('⚠️ الحد الأقصى 5 ميجابايت.');
+
+    const btn = event.target; btn.disabled = true; btn.textContent = '⏳...';
+
+    if(file.type.startsWith('image/')) {
+      compressImage(file, async (compressedData) => {
+        const newComment = { id: 'userfile_' + Date.now(), userId: currentUser.id, text: label, file: { name: file.name, type: 'image/jpeg', data: compressedData }, time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), date: new Date().toLocaleDateString('en-GB'), replyTo: null, subjectKey: subjectKey };
+        await saveDataToCloud([...commentsData, newComment], reportsData);
+        fileInput.value = ''; labelInput.value = ''; loadUserGallery(subjectKey);
+        btn.disabled = false; btn.textContent = 'إرسال';
+      });
+    } else {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const newComment = { id: 'userfile_' + Date.now(), userId: currentUser.id, text: label, file: { name: file.name, type: file.type, data: e.target.result }, time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), date: new Date().toLocaleDateString('en-GB'), replyTo: null, subjectKey: subjectKey };
+        await saveDataToCloud([...commentsData, newComment], reportsData);
+        fileInput.value = ''; labelInput.value = ''; loadUserGallery(subjectKey);
+        btn.disabled = false; btn.textContent = 'إرسال';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  async function loadUserGallery(subjectKey) {
+    const gallery = document.getElementById(`userGallery-${subjectKey}`);
+    if(!gallery) return;
+    const subjectFiles = commentsData.filter(c => c.subjectKey === subjectKey && c.file);
+    if(subjectFiles.length === 0) { gallery.innerHTML = '<p style="text-align:center;color:var(--muted);grid-column:1/-1;">لا توجد ملفات مرسلة.</p>'; return; }
+    gallery.innerHTML = subjectFiles.map(f => f.file.type.startsWith('image/') ? `<div class="user-gallery-item" onclick="openImageViewer('${f.file.data}')"><img src="${f.file.data}"><div class="label">${f.text}</div></div>` : `<div class="user-gallery-item" onclick="downloadFile('${f.file.data}', '${f.file.name}')"><div style="padding:1rem;text-align:center;"><i class="fa-solid fa-file-pdf" style="font-size:2rem;color:var(--danger);"></i></div><div class="label" style="color:var(--primary);">${f.text}</div></div>`).join('');
+  }
+
+  function openImageViewer(data) { document.getElementById('viewerImage').src = data; document.getElementById('imageViewer').classList.add('show'); }
+  function closeImageViewer() { document.getElementById('imageViewer').classList.remove('show'); }
+  function downloadFile(data, name) { const a = document.createElement('a'); a.href = data; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+
+  async function submitReport() {
+    const type = document.getElementById('reportType').value; const text = document.getElementById('reportText').value.trim();
+    if(!text) return alert('اكتب التفاصيل.');
+    const btn = event.target; btn.disabled = true; btn.textContent = '⏳...';
+    const now = new Date();
+    const newReport = { id: 'report_' + Date.now(), type: type === 'technical' ? 'خطأ تقني' : 'خطأ دراسي', text: text, time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), date: now.toLocaleDateString('en-GB') };
+    await saveDataToCloud(commentsData, [...reportsData, newReport]);
+    document.getElementById('reportText').value = ''; alert('✅ تم الإرسال.');
+    btn.disabled = false; btn.textContent = '📤 إرسال الإبلاغ';
+  }
+
+  function renderReports() {
+    const container = document.getElementById('reportsContainer'); const list = document.getElementById('reportList');
+    if(!document.body.classList.contains('admin-mode')) { list.style.display = 'none'; return; }
+    list.style.display = 'block';
+    if(reportsData.length === 0) { container.innerHTML = '<p style="color:var(--muted);">لا توجد أخطاء.</p>'; return; }
+    container.innerHTML = reportsData.map(r => `<div class="report-item"><div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;"><strong style="color:var(--danger);">${r.type}</strong><small style="color:var(--muted);">${r.time} | ${r.date}</small></div><p>${r.text}</p></div>`).join('');
+  }
+
+  function openAdminModal() { document.getElementById('adminModal').classList.add('show'); }
+  function closeAdmin() { document.getElementById('adminModal').classList.remove('show'); }
+  function checkAdminPass() {
+    if(document.getElementById('adminPass').value === ADMIN_PASSWORD) {
+      document.body.classList.add('admin-mode'); 
+      document.getElementById('adminLogin').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      document.getElementById('adminSubject').innerHTML = Object.keys(SUBJECTS).map(k => `<option value="${k}">${SUBJECTS[k].title}</option>`).join('');
+      alert('✅ وضع الأدمن.'); renderReports(); closeAdmin();
+    } else alert('خطأ');
+  }
+  function addAdminFile() {
+    const s = document.getElementById('adminSubject').value, t = document.getElementById('adminType').value, title = document.getElementById('adminTitle').value.trim(), url = document.getElementById('adminUrl').value.trim();
+    if(!title || !url) return alert('أدخل البيانات');
+    SUBJECTS[s][t].push({ title, url }); alert('أضيف محلياً.'); closeAdmin();
+  }
+
+  const S3_MODULES = [{ name: 'MATHS 3', coef: 3 }, { name: 'ELNF1', coef: 3 }, { name: 'ELTF1', coef: 3 }, { name: 'OV', coef: 2 }, { name: 'PSTA', coef: 2 }, { name: 'ProgPy', coef: 2 }, { name: 'EAGE', coef: 3 }, { name: 'EENVI', coef: 2 }];
+  function initGrades() {
+    document.getElementById('gradesBody').innerHTML = S3_MODULES.map((m, i) => `<tr><td>${m.name}</td><td><input type="number" class="td-input" min="0" max="20" step="0.25" placeholder="TD"></td><td><input type="number" class="exam-input" min="0" max="20" step="0.25" placeholder="Exam"></td><td class="avg-cell" id="module-avg-${i}">--</td><td style="color:var(--secondary);">${m.coef}</td></tr>`).join('');
+    document.querySelectorAll('.td-input, .exam-input').forEach(inp => inp.addEventListener('input', () => {
+      document.querySelectorAll('#gradesBody tr').forEach((row, i) => {
+        const td = parseFloat(row.querySelector('.td-input').value), exam = parseFloat(row.querySelector('.exam-input').value);
+        row.querySelector('.avg-cell').textContent = (!isNaN(td) || !isNaN(exam)) ? ((isNaN(td)?0:td)*0.4 + (isNaN(exam)?0:exam)*0.6).toFixed(2) : '--';
+      });
+    }));
+  }
+  function calculateAverage() {
+    let sum = 0, total = 0;
+    document.querySelectorAll('#gradesBody tr').forEach((row, i) => {
+      const td = parseFloat(row.querySelector('.td-input').value), exam = parseFloat(row.querySelector('.exam-input').value);
+      if(!isNaN(td) || !isNaN(exam)) { sum += ((isNaN(td)?0:td)*0.4 + (isNaN(exam)?0:exam)*0.6) * S3_MODULES[i].coef; total += S3_MODULES[i].coef; }
+    });
+    if(total === 0) return alert('أدخل نقطة.');
+    const avg = sum / total;
+    document.getElementById('averageValue').textContent = avg.toFixed(2) + ' / 20';
+    document.getElementById('averageMention').textContent = avg >= 16 ? '🌟 ممتاز' : avg >= 14 ? '✨ جيد جداً' : avg >= 12 ? '👍 جيد' : avg >= 10 ? '✅ مقبول' : '⚠️ راسب';
+    document.getElementById('averageResult').style.display = 'block';
+  }
+
+  window.onload = async () => {
+    renderSubjects(); initGrades(); await loadComments();
+    setInterval(loadComments, 3000); // تحديث كل 3 ثواني للكمبيوتر
+  };
+</script>
+</body>
+</html>
