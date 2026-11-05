@@ -24,13 +24,13 @@
 
   /* شريط الأخبار (الأحمر) */
   .news-ticker { background: rgba(239, 68, 68, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.9rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 1px solid #b91c1c; }
-  .ticker-track { display: flex; width: max-content; animation: scroll-ticker 30s linear infinite; }
+  .ticker-track { display: flex; width: max-content; animation: scroll-ticker 25s linear infinite; }
   .ticker-text { padding-left: 50px; display: inline-block; }
   @keyframes scroll-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
 
   /* شريط الأذكار (الأخضر) */
   .dhikr-ticker { background: rgba(22, 101, 52, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.9rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 1px solid #14532d; }
-  .dhikr-track { display: flex; width: max-content; animation: scroll-ticker 35s linear infinite; }
+  .dhikr-track { display: flex; width: max-content; animation: scroll-ticker 25s linear infinite; }
   .dhikr-text { padding-left: 50px; display: inline-block; }
 
   header { position: sticky; top: 0; z-index: 999; background: rgba(10, 20, 32, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0.7rem 1rem; }
@@ -76,6 +76,7 @@
   .file-upload-label { background: rgba(251, 191, 36, 0.15); color: var(--secondary); padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; border: 1px solid rgba(251, 191, 36, 0.3); transition: 0.3s; }
   .file-upload-label:hover { background: var(--secondary); color: #000; }
   .btn-post { background: var(--primary); color: #000; padding: 0.6rem 1.5rem; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; }
+  .btn-post:disabled { opacity: 0.7; cursor: not-allowed; }
 
   .day-separator { text-align: center; margin: 1.5rem 0 0.5rem; position: relative; }
   .day-separator::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.1); z-index: 1; }
@@ -88,7 +89,6 @@
   .chat-bubble.mine .meta-time { text-align: left; }
   .chat-bubble.other .meta-time { text-align: right; }
   
-  /* اسم الأدمن أسفل الرسالة */
   .admin-label { font-size: 0.75rem; color: var(--secondary); font-weight: bold; margin-top: 0.5rem; text-align: left; display: flex; align-items: center; gap: 0.3rem; }
 
   .reply-notification { font-size: 0.75rem; color: #f87171; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
@@ -202,6 +202,10 @@
   .admin-field input, .admin-field select { width: 100%; padding: 0.8rem; border-radius: 8px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: #fff; font-family: inherit; }
 
   footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; margin-top: 3rem; border-top: 1px solid var(--border); background: rgba(5, 10, 18, 0.9); }
+  
+  /* أعلام في الفوتر */
+  .footer-flags { display: flex; justify-content: center; gap: 1rem; margin-top: 0.8rem; }
+  .footer-flags img { width: 30px; height: 20px; border-radius: 2px; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
 
   @media (max-width: 768px) {
     .nav-menu { display: none; flex-direction: column; position: absolute; top: 100%; right: 0; left: 0; background: #0a1420; padding: 1rem; border-bottom: 1px solid var(--border); }
@@ -284,7 +288,7 @@
       </div>
       <div class="comment-actions">
         <div><label for="fileInput" class="file-upload-label"><i class="fa-solid fa-paperclip"></i> إرفاق ملف</label><input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)"></div>
-        <button class="btn-post" onclick="postComment()"><i class="fa-solid fa-paper-plane"></i> إرسال</button>
+        <button class="btn-post" id="sendBtn" onclick="postComment()"><i class="fa-solid fa-paper-plane"></i> إرسال</button>
       </div>
     </div>
   </div>
@@ -356,7 +360,14 @@
 
 <div class="image-viewer" id="imageViewer" onclick="closeImageViewer()"><button class="viewer-close" onclick="closeImageViewer()">✕</button><img id="viewerImage" src="" alt="عرض الصورة"></div>
 
-<footer><p style="margin-bottom: 0.5rem;">© 2026 كهروتقنية Group A</p><p style="color: var(--primary); font-weight: bold;">صنع بواسطة DeepSeek</p></footer>
+<footer>
+  <p style="margin-bottom: 0.5rem;">© 2026 كهروتقنية Group A</p>
+  <p style="color: var(--primary); font-weight: bold;">صنع بواسطة DeepSeek</p>
+  <div class="footer-flags">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Palestine.svg/1200px-Flag_of_Palestine.svg.png" alt="فلسطين">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/1200px-Flag_of_Algeria.svg.png" alt="الجزائر">
+  </div>
+</footer>
 
 <script>
   const ADMIN_PASSWORD = 'admin123'; 
@@ -532,13 +543,17 @@
     const text = input.value.trim();
     if(!text && !attachedFileData) return alert('اكتب رسالة أو أرفق ملفاً');
 
-    const btn = event.target;
-    btn.disabled = true; btn.textContent = '⏳ جاري الرفع...';
+    const btn = document.getElementById('sendBtn');
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...'; 
 
     let fileData = null;
     if(attachedFileData) {
       fileData = await uploadToGithub(attachedFileData.file);
-      if(!fileData) { btn.disabled = false; btn.textContent = 'إرسال'; return; }
+      if(!fileData) { 
+        btn.disabled = false; 
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال'; 
+        return; 
+      }
     }
 
     const now = new Date();
@@ -550,12 +565,14 @@
       time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), 
       date: now.toLocaleDateString('en-GB'), 
       replyTo: activeReplyId,
-      isAdmin: document.body.classList.contains('admin-mode') // تحديد ما إذا كان المرسل أدمن
+      isAdmin: document.body.classList.contains('admin-mode')
     };
 
     await saveDataToCloud([...commentsData, newComment], reportsData);
     input.value = ''; removeAttachment(); cancelReply();
-    btn.disabled = false; btn.textContent = 'إرسال';
+    
+    btn.disabled = false; 
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال';
   }
 
   function setReply(commentId, ownerId) {
@@ -605,13 +622,10 @@
     chatComments.forEach(c => {
       if (c.date !== lastDate) { html += `<div class="day-separator"><span>اليوم: ${c.date}</span></div>`; lastDate = c.date; }
       
-      // تحديد ما إذا كانت الرسالة للمستخدم الحالي أم لشخص آخر
       const isMine = c.userId === currentUser.id;
-      
-      // تحديد ما إذا كانت الرسالة مرسلة من الأدمن
       const isAdminMsg = c.isAdmin || false;
-
       const isReplied = isMine && chatComments.some(orig => orig.replyTo === c.id);
+      
       let replyContextHtml = '';
       if(c.replyTo) { const orig = chatComments.find(o => o.id === c.replyTo); if(orig) replyContextHtml = `<div class="reply-context">رداً على: "${orig.text.substring(0, 40)}"</div>`; }
       
@@ -627,14 +641,11 @@
         }
       }
       
-      // تنسيق الرسالة: إذا كانت رسالتي أو رسالة الأدمن تظهر على اليسار، وإلا على اليمين
       let bubbleClass = (isMine || isAdminMsg) ? 'mine' : 'other'; 
       if(isReplied) bubbleClass += ' replied';
       
-      // زر الرد يظهر فقط على رسائل الآخرين (ليس رسائلي ولا رسائل الأدمن إذا كنت أنا الأدمن)
       const replyBtn = (!isMine && !isAdminMsg) ? `<button class="action-btn" onclick="setReply('${c.id}', '${c.userId}')"><i class="fa-solid fa-reply"></i> رد</button>` : '';
 
-      // إضافة اسم "Admin" إذا كانت الرسالة من الأدمن
       const adminLabelHtml = isAdminMsg ? `<div class="admin-label"><i class="fa-solid fa-user-shield"></i> Admin</div>` : '';
 
       html += `<div class="chat-bubble ${bubbleClass}" id="${c.id}">
@@ -681,8 +692,6 @@
 
   async function deleteUserFile(fileId, subjectKey) {
     if(!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
-    
-    // حذف الملف من قائمة التعليقات
     const newComments = commentsData.filter(c => c.id !== fileId);
     await saveDataToCloud(newComments, reportsData);
     loadUserGallery(subjectKey);
@@ -723,11 +732,9 @@
     }).join('');
   }
 
-  // عارض الصور
   function openImageViewer(url) { document.getElementById('viewerImage').src = url; document.getElementById('imageViewer').classList.add('show'); }
   function closeImageViewer() { document.getElementById('imageViewer').classList.remove('show'); }
 
-  // عارض ملفات PDF (نافذة منبثقة جديدة)
   function openPDFViewer(iframeUrl) {
     const w = window.open('', '_blank', 'width=800,height=600');
     w.document.write(`
