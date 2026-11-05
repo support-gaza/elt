@@ -17,18 +17,20 @@
   html { scroll-behavior: smooth; }
   body { font-family: 'Cairo', sans-serif; background: var(--dark-bg); color: var(--text); line-height: 1.7; min-height: 100vh; padding-bottom: 75px; overflow-x: hidden; }
 
-  /* خلفية الشلالات - تم توضيحها قليلاً */
+  /* خلفية الشلالات - تم توضيحها أكثر */
   .video-bg { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: #0a1420; }
-  .video-bg video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.5) saturate(1.3); }
-  .video-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 20, 32, 0.6) 0%, rgba(10, 20, 32, 0.9) 100%); pointer-events: none; }
+  .video-bg video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.65) saturate(1.4); }
+  .video-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 20, 32, 0.5) 0%, rgba(10, 20, 32, 0.85) 100%); pointer-events: none; }
 
-  .news-ticker { background: rgba(239, 68, 68, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.9rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 1px solid #b91c1c; }
-  .ticker-track { display: flex; width: max-content; animation: scroll-ticker 30s linear infinite; }
+  /* الشريط العلوي الموحد (أخبار + أذكار) */
+  .top-ticker-bar { display: flex; overflow: hidden; position: relative; background: #000; border-bottom: 2px solid #b91c1c; }
+  .news-ticker { flex: 1; background: rgba(239, 68, 68, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.85rem; overflow: hidden; white-space: nowrap; position: relative; border-left: 2px solid #14532d; }
+  .ticker-track { display: flex; width: max-content; animation: scroll-ticker 35s linear infinite; }
   .ticker-text { padding-left: 50px; display: inline-block; }
   @keyframes scroll-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
 
-  .dhikr-ticker { background: rgba(22, 101, 52, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.9rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 1px solid #14532d; }
-  .dhikr-track { display: flex; width: max-content; animation: scroll-ticker 35s linear infinite reverse; }
+  .dhikr-ticker { flex: 1; background: rgba(22, 101, 52, 0.95); color: #fff; padding: 0.4rem 0; font-weight: 700; font-size: 0.85rem; overflow: hidden; white-space: nowrap; position: relative; }
+  .dhikr-track { display: flex; width: max-content; animation: scroll-ticker 40s linear infinite reverse; }
   .dhikr-text { padding-left: 50px; display: inline-block; }
 
   header { position: sticky; top: 0; z-index: 999; background: rgba(10, 20, 32, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0.7rem 1rem; }
@@ -61,14 +63,6 @@
   .card-img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1); }
   .card h3 { font-size: 1.15rem; color: var(--primary); margin-bottom: 0.5rem; }
   .card p { color: var(--muted); font-size: 0.9rem; }
-
-  /* قائمة التحديثات */
-  .updates-list { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
-  .update-item { border-bottom: 1px solid var(--border); padding: 1rem 0; }
-  .update-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .update-item h4 { color: var(--secondary); font-size: 1.1rem; margin-bottom: 0.4rem; }
-  .update-item p { color: var(--muted); font-size: 0.9rem; }
-  .update-date { color: var(--primary); font-size: 0.8rem; font-weight: bold; margin-bottom: 0.5rem; display: block; }
 
   .forum-container { max-width: 800px; margin: 0 auto; }
   .warning-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
@@ -199,17 +193,19 @@
 </head>
 <body>
 
-<div class="news-ticker">
-  <div class="ticker-track">
-    <span class="ticker-text"><span style="color: #fff; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 5px; margin-left: 10px;">📢 أخبار:</span> عندنا فرض يوم الأربعاء 11/11/2026 في مادة ELN وفقكم الله.</span>
-    <span class="ticker-text"><span style="color: #fff; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 5px; margin-left: 10px;">📢 أخبار:</span> عندنا فرض يوم الأربعاء 11/11/2026 في مادة ELN وفقكم الله.</span>
+<!-- الشريط الموحد: أخبار + أذكار -->
+<div class="top-ticker-bar">
+  <div class="news-ticker">
+    <div class="ticker-track">
+      <span class="ticker-text"><span style="color: #fff; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 5px; margin-left: 10px;">📢 أخبار:</span> عندنا فرض يوم الأربعاء 11/11/2026 في مادة ELN وفقكم الله.</span>
+      <span class="ticker-text"><span style="color: #fff; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 5px; margin-left: 10px;">📢 أخبار:</span> عندنا فرض يوم الأربعاء 11/11/2026 في مادة ELN وفقكم الله.</span>
+    </div>
   </div>
-</div>
-
-<div class="dhikr-ticker">
-  <div class="dhikr-track">
-    <span class="dhikr-text">✨ سبحان الله &nbsp;|&nbsp; الحمد لله &nbsp;|&nbsp; لا إله إلا الله &nbsp;|&nbsp; الله أكبر &nbsp;|&nbsp; سبحان الله وبحمده سبحان الله العظيم</span>
-    <span class="dhikr-text">✨ سبحان الله &nbsp;|&nbsp; الحمد لله &nbsp;|&nbsp; لا إله إلا الله &nbsp;|&nbsp; الله أكبر &nbsp;|&nbsp; سبحان الله وبحمده سبحان الله العظيم</span>
+  <div class="dhikr-ticker">
+    <div class="dhikr-track">
+      <span class="dhikr-text">✨ سبحان الله &nbsp;|&nbsp; الحمد لله &nbsp;|&nbsp; لا إله إلا الله &nbsp;|&nbsp; الله أكبر &nbsp;|&nbsp; سبحان الله وبحمده سبحان الله العظيم</span>
+      <span class="dhikr-text">✨ سبحان الله &nbsp;|&nbsp; الحمد لله &nbsp;|&nbsp; لا إله إلا الله &nbsp;|&nbsp; الله أكبر &nbsp;|&nbsp; سبحان الله وبحمده سبحان الله العظيم</span>
+    </div>
   </div>
 </div>
 
@@ -222,7 +218,6 @@
     <button class="menu-toggle" onclick="document.getElementById('navMenu').classList.toggle('open')"><i class="fa-solid fa-bars"></i></button>
     <ul class="nav-menu" id="navMenu">
       <li><a href="#home" class="active">🏠 الرئيسية</a></li>
-      <li><a href="#updates">🆕 التحديثات</a></li>
       <li><a href="#courses">📚 الدروس</a></li>
       <li><a href="#chat">💬 الشات</a></li>
       <li><a href="#tools">📊 حساب المعدل</a></li>
@@ -242,23 +237,6 @@
         <span class="hero-badge">L2 ELT - Groupe A</span>
         <span class="hero-badge">Electrotechnique</span>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- قسم التحديثات الجديد -->
-<section id="updates">
-  <div class="section-head"><h2>🆕 آخر التحديثات</h2><p>تابع جديد المنصة دون الحاجة للبحث</p></div>
-  <div class="updates-list">
-    <div class="update-item">
-      <span class="update-date">05 نوفمبر 2026</span>
-      <h4>إطلاق المنصة وتحديثات شاملة</h4>
-      <p>تم إطلاق المنصة مع ميزات جديدة: قسم التحديثات، شات محسن، ورفع جميع أنواع الملفات.</p>
-    </div>
-    <div class="update-item">
-      <span class="update-date">03 نوفمبر 2026</span>
-      <h4>إضافة الأذكار</h4>
-      <p>تمت إضافة شريط الأذكار اليومية لتذكير الطلاب.</p>
     </div>
   </div>
 </section>
@@ -416,13 +394,13 @@
     html += buildSection(s.td_solutions, 'td_solutions', 'لا توجد حلول TD.');
 
     html += `<div class="module-section" id="section-user-gallery-${key}">
-      <div style="background: rgba(251,191,36,0.1); border: 1px solid var(--secondary); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center; color: var(--secondary); font-weight: bold; font-size: 1.1rem;">
-        "أي صورة لسبورة أو حل TD، ملخص، ابعثوه - لا تحرمونا من العلم وتحرموا أنفسكم من الأجر"
+      <div style="background: rgba(251,191,36,0.1); border: 1px solid var(--secondary); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center; color: var(--secondary); font-weight: bold; font-size: 1rem;">
+        "من فضلكم من عنده صورة لسبورة ( حل TD ) أو ملخص أو أو شيء عن المادة ارسلوه لنا جزاكم الله خيرا"
       </div>
       <h4 style="color:var(--secondary);margin-bottom:1rem;">الملفات المرسلة:</h4>
       <div class="user-gallery" id="userGallery-${key}"></div>
       <div class="user-gallery-actions">
-        <h4 style="margin:0;color:var(--secondary);font-size:1rem;margin-bottom:0.5rem;">إرسال ملف جديد (جميع الأنواع مقبولة):</h4>
+        <h4 style="margin:0;color:var(--secondary);font-size:1rem;margin-bottom:0.5rem;">إرسال ملف جديد:</h4>
         <input type="text" id="userFileLabel-${key}" placeholder="عنوان الملف" style="width:100%;">
         <input type="file" id="userFile-${key}" style="width:100%;">
         <button onclick="uploadUserFile('${key}')"><i class="fa-solid fa-paper-plane"></i> إرسال</button>
@@ -455,7 +433,6 @@
       reportsData = data.record?.reports || [];
       renderComments(); renderReports();
       
-      // تحديث معرض الصور إذا كانت النافذة مفتوحة
       const openModal = document.querySelector('.modal-overlay.show');
       if (openModal && openModal.id === 'subjectModal') {
         const modalBody = document.getElementById('modalBody');
@@ -607,7 +584,9 @@
         if(c.file.type.startsWith('image/')) {
           attachmentHtml = `<img src="${c.file.url}" onclick="openImageViewer('${c.file.url}')">`;
         } else if(c.file.type === 'application/pdf') {
-          attachmentHtml = `<div style="display:flex; gap:0.5rem; margin-top:0.8rem;"><a href="${c.file.url}" target="_blank" class="file-link" style="background:rgba(0,212,255,0.1); padding:0.5rem; border-radius:6px;"><i class="fa-solid fa-eye"></i> عرض</a><a href="${c.file.url}" download="${c.file.name}" class="file-link" style="background:rgba(251,191,36,0.1); color:var(--secondary); padding:0.5rem; border-radius:6px;"><i class="fa-solid fa-download"></i> تحميل</a></div>`;
+          // عرض PDF باستخدام عارض جوجل
+          const driveViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(c.file.url)}&embedded=true`;
+          attachmentHtml = `<div style="display:flex; gap:0.5rem; margin-top:0.8rem;"><a href="#" onclick="openPDFViewer('${driveViewerUrl}'); return false;" class="file-link" style="background:rgba(0,212,255,0.1); padding:0.5rem; border-radius:6px;"><i class="fa-solid fa-eye"></i> عرض</a><a href="${c.file.url}" download="${c.file.name}" class="file-link" style="background:rgba(251,191,36,0.1); color:var(--secondary); padding:0.5rem; border-radius:6px;"><i class="fa-solid fa-download"></i> تحميل</a></div>`;
         } else {
           attachmentHtml = `<a href="${c.file.url}" target="_blank" class="file-link"><i class="fa-solid fa-download"></i> ${c.file.name}</a>`;
         }
@@ -661,11 +640,12 @@
       if(f.file.type.startsWith('image/')) {
         return `<div class="user-gallery-item" onclick="openImageViewer('${f.file.url}')"><img src="${f.file.url}"><div class="label">${f.text}</div></div>`;
       } else if(f.file.type === 'application/pdf') {
+        const driveViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(f.file.url)}&embedded=true`;
         return `<div class="user-gallery-item">
           <div style="padding:1rem; text-align:center;"><i class="fa-solid fa-file-pdf" style="font-size:2rem;color:var(--danger);"></i></div>
           <div class="label">${f.text}</div>
           <div class="action-btns">
-            <a href="${f.file.url}" target="_blank">عرض</a>
+            <a href="#" onclick="openPDFViewer('${driveViewerUrl}'); return false;">عرض</a>
             <a href="${f.file.url}" download="${f.file.name}">تحميل</a>
           </div>
         </div>`;
@@ -679,8 +659,24 @@
     }).join('');
   }
 
+  // عارض الصور
   function openImageViewer(url) { document.getElementById('viewerImage').src = url; document.getElementById('imageViewer').classList.add('show'); }
   function closeImageViewer() { document.getElementById('imageViewer').classList.remove('show'); }
+
+  // عارض ملفات PDF (نافذة منبثقة جديدة)
+  function openPDFViewer(iframeUrl) {
+    const w = window.open('', '_blank', 'width=800,height=600');
+    w.document.write(`
+      <html dir="rtl">
+      <head><title>عرض الملف</title></head>
+      <body style="margin:0;padding:0;">
+        <iframe src="${iframeUrl}" width="100%" height="100%" style="border:none;"></iframe>
+      </body>
+      </html>
+    `);
+    w.document.close();
+  }
+
   function downloadFile(url, name) { const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 
   async function submitReport() {
@@ -694,8 +690,8 @@
       text: text, 
       time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), 
       date: now.toLocaleDateString('en-GB'),
-      votes: 0, // عدد الموافقين
-      replies: [] // ردود الأدمن
+      votes: 0,
+      replies: []
     };
     await saveDataToCloud(commentsData, [...reportsData, newReport]);
     document.getElementById('reportText').value = ''; alert('✅ تم الإرسال.');
@@ -821,7 +817,7 @@
 
   window.onload = async () => {
     renderSubjects(); renderSites(); initGrades(); await loadComments();
-    setInterval(loadComments, 3000); // التحديث التلقائي كل 3 ثواني
+    setInterval(loadComments, 3000); 
   };
 </script>
 </body>
